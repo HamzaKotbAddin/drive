@@ -1,19 +1,7 @@
-import { createClient, type Client } from "@libsql/client";
-import { drizzle } from "drizzle-orm/libsql";
+// app.ts
+                
+import mysql from "mysql2/promise";
+import { drizzle } from "drizzle-orm/singlestore";
 
-import { env } from "~/env";
-import * as schema from "./schema";
-
-/**
- * Cache the database connection in development. This avoids creating a new connection on every HMR
- * update.
- */
-const globalForDb = globalThis as unknown as {
-  client: Client | undefined;
-};
-
-export const client =
-  globalForDb.client ?? createClient({ url: env.DATABASE_URL });
-if (env.NODE_ENV !== "production") globalForDb.client = client;
-
-export const db = drizzle(client, { schema });
+const pool = mysql.createPool("singlestore://hamza-b321c:y6dao%5B4k4I31hw%25Ygwek_c9@svc-3482219c-a389-4079-b18b-d50662524e8a-shared-dml.aws-virginia-6.svc.singlestore.com:3333/Drive_DB?ssl={}");
+const db = drizzle({ client: pool });

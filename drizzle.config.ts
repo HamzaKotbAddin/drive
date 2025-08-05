@@ -1,12 +1,18 @@
-import { type Config } from "drizzle-kit";
+import { type Config, defineConfig } from "drizzle-kit";
 
 import { env } from "~/env";
 
-export default {
-  schema: "./src/server/db/schema.ts",
-  dialect: "sqlite",
-  dbCredentials: {
-    url: env.DATABASE_URL,
-  },
-  tablesFilter: ["drive-tutorial_*"],
-} satisfies Config;
+export default defineConfig({
+    dialect: "singlestore",
+    schema: "./src/server/db/schema.ts",
+    dbCredentials: {
+        host: env.SINGLESTORE_HOST,
+        user: env.SINGLESTORE_USER,
+        password: env.SINGLESTORE_PASSWORD,
+        port: Number(env.SINGLESTORE_PORT),
+        database: env.SINGLESTORE_DATABASE,
+        ssl: {},
+    },
+});
+
+
