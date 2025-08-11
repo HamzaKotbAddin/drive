@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { mockFiles, mockFolders } from "../lib/mock-data";
 import { Upload, ChevronRight } from "lucide-react";
 import { Button } from "~/components/ui/button";
@@ -8,12 +8,6 @@ import { FileRow, FolderRow } from "./file-row";
 
 export default function GoogleDriveClone() {
   const [currentFolder, setCurrentFolder] = useState<string>("root");
-
-  console.log("SINGLESTORE_HOST:", process.env.SINGLESTORE_HOST);
-  console.log("SINGLESTORE_PORT:", process.env.SINGLESTORE_PORT);
-  console.log("SINGLESTORE_USER:", process.env.SINGLESTORE_USER);
-  console.log("SINGLESTORE_PASSWORD:", process.env.SINGLESTORE_PASSWORD);
-  console.log("SINGLESTORE_DATABASE:", process.env.SINGLESTORE_DATABASE);
 
   const getCurrentFiles = () => {
     const files = mockFiles.filter((file) => file.parent === currentFolder);
@@ -34,7 +28,7 @@ export default function GoogleDriveClone() {
     setCurrentFolder(folderId);
   };
 
-  const getBreadcrumbs = () => {
+  const breadcrumbs = useMemo(() => {
     const breadcrumbs = [];
     let currentId: string | null = currentFolder;
     console.log("🔍 Building breadcrumbs for:", currentId);
@@ -54,7 +48,7 @@ export default function GoogleDriveClone() {
 
     console.log("✅ Final Breadcrumbs:", breadcrumbs);
     return breadcrumbs;
-  };
+  }, [currentFolder]);
 
   const handleUpload = () => {
     alert("Upload functionality would be implemented here");
@@ -79,7 +73,7 @@ export default function GoogleDriveClone() {
             >
               My Drive
             </Button>
-            {getBreadcrumbs().map((folder) => (
+            {breadcrumbs.map((folder) => (
               <div key={folder.id} className="flex cursor-pointer items-center">
                 <ChevronRight className="mx-2 text-gray-500" size={16} />
                 <Button
