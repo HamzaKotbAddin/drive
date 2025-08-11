@@ -1,21 +1,27 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { int, text, singlestoreTable, index} from "drizzle-orm/singlestore-core";
+import { int, text, index, singlestoreTableCreator} from "drizzle-orm/singlestore-core";
 
-export const users = singlestoreTable("users_table", {
+
+export const createTable = singlestoreTableCreator((name) => `drive_${name}`);
+
+
+export const files = createTable("files_table", {
   id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
-  age: int("age"),
+  url: text("url").notNull(),
+  parent: int("parent").notNull(),
+  size: int("size").notNull(),
+}, (t)=> {
+  return [index("parent_index").on(t.parent)]
 });
 
 
-export const files = singlestoreTable("files_table", {
+export const folders = createTable("folders_table", {
   id: int("id").primaryKey().autoincrement(),
-name: text("name"),
-url: text("url"),
-parent: int("parent"),
-size: int("size"),
-}, (t)=> {
+  name: text("name").notNull(),
+  parent: int("parent"),
+}, (t) => {
   return [index("parent_index").on(t.parent)]
 });
