@@ -9,6 +9,12 @@ import { FileRow, FolderRow } from "./file-row";
 export default function GoogleDriveClone() {
   const [currentFolder, setCurrentFolder] = useState<string>("root");
 
+  console.log("SINGLESTORE_HOST:", process.env.SINGLESTORE_HOST);
+  console.log("SINGLESTORE_PORT:", process.env.SINGLESTORE_PORT);
+  console.log("SINGLESTORE_USER:", process.env.SINGLESTORE_USER);
+  console.log("SINGLESTORE_PASSWORD:", process.env.SINGLESTORE_PASSWORD);
+  console.log("SINGLESTORE_DATABASE:", process.env.SINGLESTORE_DATABASE);
+
   const getCurrentFiles = () => {
     const files = mockFiles.filter((file) => file.parent === currentFolder);
     console.log("📁 Current Files:", files);

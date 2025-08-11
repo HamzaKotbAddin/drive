@@ -2,7 +2,6 @@ import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
 const isLinting = process.argv.includes("lint");
-const isBuilding = process.argv.includes("build");
 
 export const env = createEnv({
   /**
